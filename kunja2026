@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>알뜰시장 장부</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFF6D6;--card:#fff;--ink:#3a2e5a;--sub:#7a6f99;--line:#e6dcc0;--yellow:#FFD23F;--coral:#FF6B81;--mint:#2EC4A6;--sky:#4D9BFF;--grape:#9B6BFF;--orange:#FF9F43;--dot:#ffe9a3;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a2447;--card:#3a3362;--ink:#fff4d6;--sub:#c9bfee;--line:#5a5290;--dot:#352d5c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#2a2447;--card:#3a3362;--ink:#fff4d6;--sub:#c9bfee;--line:#5a5290;--dot:#352d5c;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Gowun Dodum','Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:var(--ink);background:var(--bg);background-image:radial-gradient(var(--dot) 2.5px,transparent 3px);background-size:26px 26px;font-size:18px;line-height:1.5;min-height:100vh}
+.wrap{max-width:720px;margin:0 auto;padding:14px 14px 90px}
+h1{margin:6px 0 2px;font-size:30px;letter-spacing:-.5px}
+h1 span{display:inline-block}
+.hero{text-align:center;padding:8px 0 4px}
+.hero p{margin:0;color:var(--sub)}
+.card{background:var(--card);border-radius:26px;padding:18px;margin:14px 0;border:3px solid var(--ink);box-shadow:0 6px 0 var(--ink)}
+.card h2{margin:0 0 10px;font-size:22px}
+label{display:block;font-size:16px;color:var(--sub);margin:10px 0 4px}
+input,select{width:100%;font:inherit;font-size:20px;padding:12px 14px;border-radius:16px;border:3px solid var(--line);background:var(--card);color:var(--ink)}
+input:focus,select:focus,button:focus-visible{outline:4px solid var(--sky);outline-offset:2px}
+.row{display:flex;gap:10px}.row>*{flex:1;min-width:0}
+.grades{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.grades button{padding:12px 0;font-size:22px;border-radius:16px;border:3px solid var(--ink);background:var(--card);color:var(--ink);font-family:inherit;cursor:pointer}
+.grades button.on{background:var(--yellow);color:#3a2e5a;transform:translateY(-3px);box-shadow:0 4px 0 var(--ink)}
+.btn{font:inherit;font-size:21px;border:3px solid var(--ink);border-radius:20px;padding:12px 18px;cursor:pointer;color:#fff;box-shadow:0 5px 0 var(--ink);width:100%;margin-top:14px}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.b-sky{background:var(--sky)}.b-coral{background:var(--coral)}.b-mint{background:var(--mint)}.b-grape{background:var(--grape)}
+.btn.ghost{background:var(--card);color:var(--ink);box-shadow:none;font-size:16px;padding:8px;margin-top:10px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:8px;padding:8px 0;background:var(--bg)}
+nav button{flex:1;font:inherit;font-size:17px;padding:10px 4px;border-radius:18px;border:3px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+nav button.on{color:#fff;box-shadow:0 4px 0 var(--ink);transform:translateY(-2px)}
+nav button[data-t=sell].on{background:var(--coral)}nav button[data-t=buy].on{background:var(--sky)}nav button[data-t=sum].on{background:var(--mint)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.who{font-size:18px}.who b{font-size:20px}
+.pig{cursor:pointer;display:flex;align-items:center;gap:10px;background:var(--yellow);color:#3a2e5a;border:3px solid var(--ink);border-radius:22px;padding:8px 14px}
+.pig .big{font-size:26px;font-weight:700;line-height:1.1}
+.pig small{display:block;font-size:13px}
+.tags{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:12px}
+.tag{position:relative;background:#fff;color:#3a2e5a;border:3px solid #3a2e5a;border-radius:6px 18px 18px 6px;padding:14px 12px 12px 26px;clip-path:polygon(0 0,86% 0,100% 18%,100% 100%,0 100%)}
+.tag::before{content:"";position:absolute;left:9px;top:12px;width:11px;height:11px;border-radius:50%;border:3px solid #3a2e5a;background:var(--bg)}
+.tag .nm{font-size:19px;word-break:keep-all;margin-top:10px}
+.tag .pr{font-size:26px;font-weight:700;color:var(--coral)}
+.tag .ct{font-size:14px;color:#7a6f99}
+.tag .x,.rc .x{position:absolute;right:6px;bottom:4px;border:0;background:none;font-size:20px;cursor:pointer}
+.tag.out{background:#dcdcdc!important;color:#8a8a8a;border-color:#8a8a8a;filter:grayscale(1)}.tag.out .pr,.tag.out .ct{color:#8a8a8a}
+.c0{background:#FFE3E8}.c1{background:#DDF3FF}.c2{background:#E4F9D8}.c3{background:#FFF0C2}.c4{background:#ECE0FF}
+.rcs{margin-top:12px;background:#fff;color:#3a2e5a;border:3px solid #3a2e5a;padding:12px 14px 22px;border-radius:12px 12px 0 0;position:relative;font-family:'Gowun Dodum',monospace}
+.rcs::after{content:"";position:absolute;left:-3px;right:-3px;bottom:-14px;height:14px;background:linear-gradient(-45deg,transparent 8px,#fff 0) 0 0/16px 14px,linear-gradient(45deg,transparent 8px,#fff 0) 0 0/16px 14px;filter:drop-shadow(0 3px 0 #3a2e5a)}
+.rcs h3{margin:0 0 6px;text-align:center;border-bottom:3px dashed #3a2e5a;padding-bottom:6px;font-size:20px}
+.rc{display:flex;justify-content:space-between;gap:8px;padding:7px 28px 7px 0;border-bottom:2px dotted #c9bfee;position:relative}
+.rc .x{right:0;bottom:6px}
+.tot{display:flex;justify-content:space-between;font-size:22px;font-weight:700;padding-top:10px}
+.empty{text-align:center;color:var(--sub);padding:18px 0}
+.warn{background:#FFE3E8;color:#8a1030;border:3px solid var(--coral);border-radius:16px;padding:10px 12px;margin-top:10px;font-size:16px}
+.sumline{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:3px dotted var(--line);font-size:20px}
+.sumline.final{border:0;font-size:26px;font-weight:700}
+.ev{margin:10px 0 16px}
+.ev p{margin:0 0 6px}
+.lv{display:flex;gap:6px}
+.lv button{flex:1;font:inherit;font-size:15px;padding:8px 2px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.lv button.on{border-color:var(--ink);background:var(--yellow);color:#3a2e5a;font-weight:700}
+.lv button i{display:block;font-style:normal;font-size:24px}
+.msg{text-align:center;font-size:20px;padding:12px;border-radius:18px;background:#E4F9D8;color:#1f5a2a;border:3px solid var(--mint);margin-top:10px}
+.pop{position:fixed;left:50%;bottom:calc(30px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 22px;border-radius:30px;font-size:20px;z-index:20;animation:pop .25s ease-out}
+@keyframes pop{from{transform:translate(-50%,16px) scale(.8);opacity:0}}
+.sec{display:none}.sec.on{display:block}
+.npc{text-align:center}.who2{display:flex;justify-content:center;align-items:center;gap:8px}.crest{height:34px;width:auto;border-radius:8px;border:2px solid var(--ink);background:#fff}.npc .av{font-size:68px;display:block;line-height:1.1}.stars{font-size:26px;letter-spacing:4px;margin-bottom:6px}
+.bubble{background:#FFF0C2;color:#3a2e5a;border:3px solid var(--ink);border-radius:22px;padding:16px;margin:12px 0;text-align:left;animation:bub .3s ease-out}.bubble .big{font-size:58px;text-align:center;line-height:1.2}.bubble h2{margin:4px 0 6px;font-size:23px}.bubble p{margin:6px 0}.qt{color:#7a45e0;font-weight:700}
+@keyframes bub{from{transform:scale(.92);opacity:0}}@media (prefers-reduced-motion:reduce){.bubble{animation:none}}
+.ovl{position:fixed;inset:0;overflow:auto;background:var(--bg);background-image:radial-gradient(var(--dot) 2.5px,transparent 3px);background-size:26px 26px;z-index:25;padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(14px + env(safe-area-inset-bottom,0px))}
+@media print{.ovl{display:none!important}}
+.pr-only{display:none}
+.seg{display:flex;gap:6px;margin-bottom:6px}.seg span,.seg button{font:inherit;cursor:pointer;background:var(--card);flex:1;text-align:center;font-size:15px;padding:8px 2px;border-radius:14px;border:3px solid var(--line);color:var(--sub)}.seg span.on,.seg button.on{background:var(--coral);border-color:var(--ink);color:#fff;font-weight:700}
+.sb{display:flex;gap:6px;margin:8px 0 22px}.sb button{font:inherit;font-size:16px;border:3px solid #3a2e5a;border-radius:12px;background:#fff;color:#3a2e5a;cursor:pointer;padding:6px 8px}.sb .plus{flex:1;background:var(--mint);color:#fff}
+.ring{width:160px;height:160px;border-radius:50%;margin:14px auto;display:grid;place-items:center;background:conic-gradient(var(--coral) calc(var(--p)*1%),var(--line) 0);border:3px solid var(--ink)}.ring div{width:118px;height:118px;border-radius:50%;background:var(--card);display:grid;place-content:center;text-align:center}.ring b{font-size:36px;line-height:1}.ring small{font-size:14px;color:var(--sub)}
+.tb{width:100%;border-collapse:collapse;font-size:15px}.tb th,.tb td{border-bottom:2px dotted var(--line);padding:6px 5px;text-align:center;white-space:nowrap}.tb th{color:var(--sub);font-weight:400}
+nav button[data-t=tch].on{background:var(--grape)}
+.mini{font:inherit;font-size:14px;border:2px solid var(--ink);border-radius:12px;background:var(--card);color:var(--ink);padding:4px 8px;cursor:pointer;margin:4px 0}
+.rpt{position:fixed;inset:0;overflow:auto;background:#fff;color:#222;padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(14px + env(safe-area-inset-bottom,0px));z-index:30}.rpt .tb th{color:#555}.rpt .tb td,.rpt .tb th{border-bottom:2px solid #ddd}.rp{max-width:720px;margin:0 auto 30px}.rbar{max-width:720px;margin:0 auto 10px}
+@media print{body.hasrpt .wrap{display:none!important}.rpt{position:static;overflow:visible;padding:0}.rp{break-after:page;margin:0}}
+@media print{.sec.tch{display:none!important}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none}}
+@media print{body{background:#fff;color:#000;font-size:14px}nav,.btn,.x,.noprint,#addS,#addB{display:none!important}.sec{display:block!important}.card{box-shadow:none;break-inside:avoid}.pr-only{display:block}.wrap{padding:0}.pig{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+(function(){
+var KEY='altteul-sijang-v1';
+var S={p:null,sells:[],buys:[],eS:[-1,-1,-1],eB:[-1,-1,-1],sign:false,left:'',tab:'sell'};
+try{var raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw));}catch(e){}
+var DB=null,UID=null,TEACHER=false,ROWS=[];
+if(!S.phase)S.phase='prep';
+S.sells=S.sells.map(function(x){if(x.sold===undefined)x.sold=x.qty;return x;});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}sync();}
+function sync(){if(!DB||!UID||!S.p)return;try{DB.doc('records/'+UID).set({grade:S.p.grade,cls:S.p.cls,num:S.p.num,name:S.p.name,sold:soldN(),stock:stockN(),earn:totalS(),spent:totalB(),left:leftNow(),phase:S.phase||'prep',at:Date.now(),start:S.p.start,submittedAt:S.submitted||0,sellsL:S.submitted?S.sells:[],buysL:S.submitted?S.buys:[],eS:S.eS,eB:S.eB}).catch(function(){});}catch(e){}}
+function won(n){return Number(n||0).toLocaleString('ko-KR')+'원';}
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function sum(a,f){return a.reduce(function(t,x){return t+f(x);},0);}
+function totalS(){return sum(S.sells,function(x){return x.price*x.sold;});}
+function stockN(){return sum(S.sells,function(x){return x.qty;});}
+function soldN(){return sum(S.sells,function(x){return x.sold;});}
+function pct(){var s=stockN();return s?Math.round(soldN()/s*100):0;}
+function totalB(){return sum(S.buys,function(x){return x.price;});}
+function leftNow(){return S.p.start+totalS()-totalB();}
+function toast(t){var d=document.createElement('div');d.className='pop';d.textContent=t;document.body.appendChild(d);setTimeout(function(){d.remove();},1600);}
+var app=document.getElementById('app');
+var EVS=[['알뜰시장에 필요한 준비물을 빠짐없이 준비했나요?','물건을 판매 방법에 맞게 잘 판매하였나요?','가게 놀이 활동 후 주변 정리를 잘하였나요?'],['나에게 꼭 필요한 물건만 구매하였나요?','합리적으로 저렴한 가격에 물건을 구입하였나요?','가게 놀이 활동 후 주변 정리를 잘하였나요?']];
+var LV=[['😍','참 잘했어요'],['🙂','잘했어요'],['💪','노력이 필요해요']];
+
+function setup(){
+  var g=S.p?S.p.grade:3;
+  app.innerHTML='<div class="hero"><h1>🛍️ 알뜰시장 장부</h1><p>가격표와 영수증을 내 손안에 모아요!</p></div>'+
+  '<div class="card"><h2>👋 나를 알려주세요</h2><label>학년</label><div class="grades" id="gr"></div>'+
+  '<div class="row"><div><label>반</label><input id="cls" type="number" inputmode="numeric" min="1" placeholder="예: 2" value="'+(S.p?S.p.cls:'')+'"></div><div><label>번호</label><input id="num" type="number" inputmode="numeric" min="1" placeholder="예: 7" value="'+(S.p?S.p.num:'')+'"></div></div>'+
+  '<label>이름</label><input id="nm" placeholder="내 이름" maxlength="10" value="'+(S.p?esc(S.p.name):'')+'">'+
+  '<label>처음 가지고 있던 돈 (원)</label><input id="st" type="number" inputmode="numeric" min="0" step="100" placeholder="예: 3000" value="'+(S.p?S.p.start:'')+'">'+
+  '<div id="err"></div><button class="btn b-coral" id="go">🚀 시작하기</button>'+'<button class="btn b-grape" id="tc">🔒 교사 화면 보기</button>'+'</div>';
+  var gr=document.getElementById('gr');
+  function drawG(){gr.innerHTML='';for(var i=1;i<=6;i++){(function(i){var b=document.createElement('button');b.textContent=i;if(i===g)b.className='on';b.onclick=function(){g=i;drawG();};gr.appendChild(b);})(i);}}
+  drawG();
+  var tc=document.getElementById('tc');if(tc)tc.onclick=function(){S.tab='tch';main();};
+  document.getElementById('go').onclick=function(){
+    var cls=+document.getElementById('cls').value,num=+document.getElementById('num').value,nm=document.getElementById('nm').value.trim(),st=+document.getElementById('st').value;
+    if(!cls||!num||!nm||isNaN(st)||document.getElementById('st').value===''){document.getElementById('err').innerHTML='<div class="warn">반, 번호, 이름, 처음 가진 돈을 모두 적어 주세요.</div>';return;}
+    S.p={grade:g,cls:cls,num:num,name:nm,start:st};save();main();
+  };
+}
+
+function header(){
+  return '<div class="card top" style="margin-top:6px"><div class="who">'+S.p.grade+'학년 '+S.p.cls+'반 '+S.p.num+'번<br><b>'+esc(S.p.name)+'</b></div><div class="pig" id="pig" role="button" tabindex="0" aria-label="내 정보 고치기"><span style="font-size:34px">🐷</span><div><small>지금 내 돈 ✏️</small><div class="big">'+won(leftNow())+'</div></div></div></div>'+
+  '<nav class="noprint"><button data-t="sell" class="'+(S.tab==='sell'?'on':'')+'">🏷️ 판매</button><button data-t="buy" class="'+(S.tab==='buy'?'on':'')+'">🧾 구매</button><button data-t="sum" class="'+(S.tab==='sum'?'on':'')+'">⭐ 정리</button>'+'<button data-t="tch" class="'+(S.tab==='tch'?'on':'')+'">🔒 교사</button>'+'</nav>';
+}
+
+function sellSec(){
+  var ph=S.phase||'prep';
+  var h='<section class="sec card'+(S.tab==='sell'?' on':'')+'"><h2>🏷️ 판매 가격표</h2><div class="seg noprint">'+[['prep','① 판매준비'],['selling','② 판매중'],['done','③ 판매종료']].map(function(a){return '<button class="'+(ph===a[0]?'on':'')+'" data-ph="'+a[0]+'">'+a[1]+'</button>';}).join('')+'</div>';
+  if(ph!=='done')h+='<label>물건 이름</label><input id="sn" placeholder="예: 연필 세트" maxlength="20"><div class="row"><div><label>가격 (원)</label><input id="sp" type="number" inputmode="numeric" min="0" step="100" placeholder="500"></div><div><label>팔 개수</label><input id="sq" type="number" inputmode="numeric" min="1" value="1"></div></div><button class="btn b-coral" id="addS">➕ 가격표 만들기</button>';
+  if(ph==='selling')h+='<div class="msg">💰 지금까지 번 돈 <b>'+won(totalS())+'</b></div>';
+  if(ph==='done'){var p=pct();h+='<div class="ring" style="--p:'+p+'"><div><b>'+p+'%</b><small>판매했어요</small></div></div><div class="msg">준비한 '+stockN()+'개 중 '+soldN()+'개를 팔아서 '+won(totalS())+'을 벌었어요!<br>'+(p>=100?'모두 팔았어요! 대단해요 🎉':p>=70?'정말 잘 팔았어요 👏':p>=40?'절반 넘게 팔았어요 😊':'다음엔 더 많이 팔 수 있을 거예요 💪')+'</div>';}
+  if(!S.sells.length)h+='<div class="empty">아직 가격표가 없어요.<br>위에서 첫 가격표를 만들어 보세요!</div>';
+  else h+='<div class="tags">'+S.sells.map(function(x,i){return '<div class="tag c'+(i%5)+(x.qty>0&&x.sold>=x.qty?' out':'')+'"><div class="nm">'+esc(x.name)+'</div><div class="pr">'+won(x.price)+'</div><div class="ct">'+x.sold+' / '+x.qty+'개 팔림'+(x.qty>0&&x.sold>=x.qty?' · 완판!':'')+'</div>'+(ph==='selling'?'<div class="sb noprint"><button data-sd="'+i+',-1" aria-label="하나 취소">−</button><button class="plus" data-sd="'+i+',1">✔ 팔렸어요</button></div>':'')+(ph==='done'?'':'<button class="x" data-ds="'+i+'" aria-label="삭제">🗑️</button>')+'</div>';}).join('')+'</div>';
+  h+='<div class="tot" style="margin-top:14px"><span>총 판매 금액</span><span style="color:var(--coral)">'+won(totalS())+'</span></div>';
+  h+=ph==='prep'?'<button class="btn b-mint noprint" data-ph="selling">▶ 판매 시작하기</button>':ph==='selling'?'<button class="btn b-grape noprint" data-ph="done">⏹ 판매 끝내기</button>':'<button class="btn b-mint noprint" data-ph="selling">▶ 다시 판매하기</button>';
+  return h+'</section>';
+}
+function tchSec(){
+  var by={};ROWS.forEach(function(r){var k=r.grade+'학년 '+r.cls+'반';(by[k]=by[k]||[]).push(r);});
+  var ks=Object.keys(by).sort(function(a,b){return parseInt(a)-parseInt(b)||parseInt(a.split(' ')[1])-parseInt(b.split(' ')[1]);});
+  var h='<section class="sec tch card'+(S.tab==='tch'?' on':'')+'"><h2>👩‍🏫 학급별 현황</h2>';
+  if(!UNLOCKED)return h+'<label>비밀번호를 입력하세요</label><input id="pw" type="password" inputmode="numeric" maxlength="8" placeholder="비밀번호"><button class="btn b-grape" id="pwgo">🔓 들어가기</button></section>';
+  if(!DB||!TEACHER)h+='<div class="warn">교사 계정으로 열었을 때만 학생 기록을 볼 수 있어요.</div>';
+  else if(!ks.length)h+='<div class="empty">아직 학생 기록이 없어요.</div>';
+  CLSB=by;CLSK=ks;ks.forEach(function(k,ki){var a=by[k].sort(function(x,y){return x.num-y.num;}),st=sum(a,function(r){return r.stock||0;}),so=sum(a,function(r){return r.sold||0;});
+    h+='<h3>'+esc(k)+' · '+a.length+'명 · 평균 판매율 '+(st?Math.round(so/st*100):0)+'%</h3><button class="mini noprint" data-pc="'+ki+'">🖨️ 이 반 보고서 모두 인쇄</button><div style="overflow-x:auto"><table class="tb"><tr><th>번호</th><th>이름</th><th>판매율</th><th>번 돈</th><th>쓴 돈</th><th>남은 돈</th><th>상태</th><th>제출</th></tr>'+a.map(function(r){return '<tr><td>'+esc(String(r.num))+'</td><td>'+esc(String(r.name))+'</td><td>'+(r.stock?Math.round(r.sold/r.stock*100):0)+'%</td><td>'+won(r.earn)+'</td><td>'+won(r.spent)+'</td><td>'+won(r.left)+'</td><td>'+({prep:'준비',selling:'판매중',done:'종료'}[r.phase]||'')+'</td><td>'+(r.submittedAt?'<button class="mini" data-rp="'+ROWS.indexOf(r)+'">📄 보기</button>':'–')+'</td></tr>';}).join('')+'</table></div>';});
+  return h+'</section>';
+}
+function tchOnly(){
+  if(S.tab==='tch'){app.innerHTML='<div class="hero"><h1>👩‍🏫 교사 화면</h1></div>'+tchSec()+'<button class="btn ghost" id="bk">← 돌아가기</button>';document.getElementById('bk').onclick=function(){S.tab='sell';setup();};}
+  else setup();
+}
+function buySec(){
+  var h='<section class="sec card '+(S.tab==='buy'?'on':'')+'"><h2>🧾 내가 구매한 물건 (영수증)</h2>'+
+  '<label>산 물건</label><input id="bn" placeholder="예: 스티커" maxlength="20">'+
+  '<label>얼마였나요? (원)</label><input id="bp" type="number" inputmode="numeric" min="0" step="100" placeholder="700">'+
+  '<div id="berr"></div><button class="btn b-sky" id="addB">➕ 영수증에 적기</button>';
+  h+='<div class="rcs"><h3>🧾 영수증</h3>';
+  if(!S.buys.length)h+='<div class="empty" style="color:#7a6f99">아직 산 물건이 없어요.</div>';
+  else h+=S.buys.map(function(x,i){return '<div class="rc"><span>'+esc(x.name)+'</span><b>'+won(x.price)+'</b><button class="x" data-db="'+i+'" aria-label="삭제">🗑️</button></div>';}).join('');
+  h+='<div class="tot"><span>총 구매 금액</span><span style="color:var(--sky)">'+won(totalB())+'</span></div></div></section>';
+  return h;
+}
+function evBlock(k,key){
+  return EVS[k].map(function(q,i){var cur=S[key][i];return '<div class="ev"><p>'+q+'</p><div class="lv">'+LV.map(function(l,j){return '<button class="'+(cur===j?'on':'')+'" data-ev="'+key+','+i+','+j+'"><i>'+l[0]+'</i>'+l[1]+'</button>';}).join('')+'</div></div>';}).join('');
+}
+function sumSec(){
+  var calc=leftNow();
+  var h='<section class="sec card '+(S.tab==='sum'?'on':'')+'"><h2>⭐ 알뜰시장 정리하기</h2>'+
+  '<div class="sumline"><span>처음 가지고 있던 돈</span><b>'+won(S.p.start)+'</b></div>'+
+  '<div class="sumline"><span>➕ 총 판매 금액</span><b style="color:var(--coral)">'+won(totalS())+'</b></div>'+
+  '<div class="sumline"><span>➖ 총 구매 금액</span><b style="color:var(--sky)">'+won(totalB())+'</b></div>'+
+  '<div class="sumline final"><span>마지막에 남은 돈</span><span style="color:var(--mint)">'+won(calc)+'</span></div>';
+  if(calc<0)h+='<div class="warn">남은 돈이 0원보다 작아요. 구매 금액을 다시 확인해 볼까요?</div>';
+  h+='<label class="noprint">내 지갑에 진짜 남은 돈 (직접 세어 보아요)</label><input id="lf" class="noprint" type="number" inputmode="numeric" min="0" step="100" placeholder="직접 센 금액" value="'+S.left+'">';
+  if(S.left!==''&&S.left!==null){h+=(+S.left===calc)?'<div class="msg">🎉 딱 맞아요! 돈 계산 달인!</div>':'<div class="warn">장부 금액('+won(calc)+')과 달라요. 가격표와 영수증을 다시 살펴보아요.</div>';}
+  h+='<h2 style="margin-top:22px">♥ 판매 자기 평가</h2>'+evBlock(0,'eS')+'<h2>♥ 구매 자기 평가</h2>'+evBlock(1,'eB')+
+  '<button class="btn b-grape noprint" id="pt">📨 선생님께 알뜰시장 활동 결과 제출하기</button>'+(S.submitted?'<div class="msg noprint">'+(DB&&UID?'✅ 선생님께 제출했어요!':'⚠️ 이 기기에서는 전송이 안 돼요. 선생님께 화면을 보여 주세요.')+'</div>':'')+
+  '<button class="btn ghost noprint" id="reset">처음부터 다시 하기</button></section>';
+  return h;
+}
+
+function main(){
+  if(!S.p){tchOnly();return;}
+  app.innerHTML='<div class="pr-only" style="text-align:center;font-size:22px"><b>알뜰시장 경제 학습지</b></div>'+header()+sellSec()+buySec()+sumSec()+tchSec();
+  bind();
+}
+function bind(){
+  var q=function(s){return app.querySelectorAll(s);};
+  q('nav button').forEach(function(b){b.onclick=function(){S.tab=b.dataset.t;save();main();window.scrollTo(0,0);};});
+  var aS=document.getElementById('addS');
+  if(aS)aS.onclick=function(){
+    var n=document.getElementById('sn').value.trim(),p=document.getElementById('sp').value,c=+document.getElementById('sq').value||1;
+    if(!n||p===''){toast('이름과 가격을 적어 주세요');return;}
+    S.sells.push({name:n,price:Math.max(0,+p),qty:Math.max(1,c),sold:0});save();main();toast('🏷️ 가격표 완성!');
+  };
+  var aB=document.getElementById('addB');
+  aB.onclick=function(){
+    var n=document.getElementById('bn').value.trim(),p=document.getElementById('bp').value;
+    if(!n||p===''){toast('물건과 가격을 적어 주세요');return;}
+    S.buys.push({name:n,price:Math.max(0,+p)});save();main();
+    if(leftNow()<0){document.getElementById('berr').innerHTML='<div class="warn">가진 돈보다 많이 썼어요! 영수증을 확인해 보세요.</div>';}else toast('🧾 영수증에 적었어요!');
+  };
+  q('[data-ds]').forEach(function(b){b.onclick=function(){if(confirm('이 가격표를 지울까요?')){S.sells.splice(+b.dataset.ds,1);save();main();}};});
+  q('[data-db]').forEach(function(b){b.onclick=function(){if(confirm('이 영수증 줄을 지울까요?')){S.buys.splice(+b.dataset.db,1);save();main();}};});
+  q('[data-ev]').forEach(function(b){b.onclick=function(){var a=b.dataset.ev.split(',');S[a[0]][+a[1]]=+a[2];save();main();};});
+  q('[data-sd]').forEach(function(b){b.onclick=function(){var a=b.dataset.sd.split(','),it=S.sells[+a[0]],d=+a[1],n=it.sold+d;if(n<0)return;if(n>it.qty){toast('준비한 '+it.qty+'개를 모두 팔았어요!');return;}it.sold=n;save();main();if(d>0)toast('💰 +'+won(it.price));};});
+  q('[data-ph]').forEach(function(b){b.onclick=function(){S.phase=b.dataset.ph;save();main();window.scrollTo(0,0);};});
+  var pg=document.getElementById('pig');if(pg){pg.onclick=editMe;pg.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();editMe();}};}
+  var lf=document.getElementById('lf');lf.onchange=function(){S.left=lf.value;save();main();};
+  document.getElementById('pt').onclick=function(){if(!confirm('결과를 선생님께 제출할까요?'))return;S.submitted=Date.now();save();main();window.scrollTo(0,document.body.scrollHeight);};
+  document.getElementById('reset').onclick=function(){if(confirm('모든 기록이 지워져요. 정말 처음부터 다시 할까요?')){S={p:null,sells:[],buys:[],eS:[-1,-1,-1],eB:[-1,-1,-1],sign:false,left:'',tab:'sell',phase:'prep'};save();setup();}};
+}
+var UNLOCKED=false,CLSB={},CLSK=[];
+function editMe(){
+  if(document.querySelector('.ovl'))return;
+  var g=S.p.grade,d=document.createElement('div');d.className='ovl';
+  d.innerHTML='<div class="card" style="max-width:560px;margin:20px auto"><h2>✏️ 내 정보 고치기</h2><label>학년</label><div class="grades" id="egr"></div><div class="row"><div><label>반</label><input id="ecl" type="number" inputmode="numeric" min="1"></div><div><label>번호</label><input id="enu" type="number" inputmode="numeric" min="1"></div></div><label>이름</label><input id="enm" maxlength="10"><label>지금 내 돈 (원)</label><input id="emo" type="number" inputmode="numeric" step="100"><div id="eer"></div><button class="btn b-mint" id="esv">저장하기</button><button class="btn ghost" id="ecc">취소</button></div>';
+  document.body.appendChild(d);
+  var $=function(i){return d.querySelector('#'+i);};
+  $('ecl').value=S.p.cls;$('enu').value=S.p.num;$('enm').value=S.p.name;$('emo').value=leftNow();
+  function drawG(){var gr=$('egr');gr.innerHTML='';for(var i=1;i<=6;i++){(function(i){var b=document.createElement('button');b.textContent=i;if(i===g)b.className='on';b.onclick=function(){g=i;drawG();};gr.appendChild(b);})(i);}}
+  drawG();
+  $('ecc').onclick=function(){d.remove();};
+  $('esv').onclick=function(){
+    var cl=+$('ecl').value,nu=+$('enu').value,nm=$('enm').value.trim(),mo=$('emo').value,st=+mo-totalS()+totalB();
+    if(!cl||!nu||!nm||mo===''){$('eer').innerHTML='<div class="warn">반, 번호, 이름, 지금 내 돈을 모두 적어 주세요.</div>';return;}
+    if(st<0){$('eer').innerHTML='<div class="warn">지금 내 돈이 너무 작아요. 판매와 구매 기록을 다시 확인해 보세요.</div>';return;}
+    S.p={grade:g,cls:cl,num:nu,name:nm,start:st};save();d.remove();main();toast('✅ 저장했어요!');
+  };
+}
+function repHtml(r){var A=r.sellsL||[],B=r.buysL||[],pc=r.stock?Math.round(r.sold/r.stock*100):0;
+  var ev=[0,1].map(function(k){var v=(k?r.eB:r.eS)||[];return '<p><b>'+(k?'구매':'판매')+'</b></p>'+EVS[k].map(function(q,i){var l=LV[v[i]];return '<p>'+q+' → '+(l?l[0]+' '+l[1]:'평가 안 함')+'</p>';}).join('');}).join('');
+  return '<div class="rp"><h2>🛍️ 알뜰시장 활동 결과 보고서</h2><p>'+esc(String(r.grade))+'학년 '+esc(String(r.cls))+'반 '+esc(String(r.num))+'번 <b>'+esc(String(r.name))+'</b></p>'+
+  '<table class="tb"><tr><th>처음 돈</th><th>번 돈</th><th>쓴 돈</th><th>남은 돈</th><th>판매율</th></tr><tr><td>'+won(r.start)+'</td><td>'+won(r.earn)+'</td><td>'+won(r.spent)+'</td><td>'+won(r.left)+'</td><td>'+pc+'%</td></tr></table>'+
+  '<h3>판매한 물건</h3><table class="tb"><tr><th>물건</th><th>가격</th><th>판매/준비</th><th>번 돈</th></tr>'+(A.map(function(x){return '<tr><td>'+esc(String(x.name))+'</td><td>'+won(x.price)+'</td><td>'+Number(x.sold||0)+' / '+Number(x.qty||0)+'</td><td>'+won(Number(x.price)*Number(x.sold))+'</td></tr>';}).join('')||'<tr><td colspan="4">없음</td></tr>')+'</table>'+
+  '<h3>구매한 물건</h3><table class="tb"><tr><th>물건</th><th>가격</th></tr>'+(B.map(function(x){return '<tr><td>'+esc(String(x.name))+'</td><td>'+won(x.price)+'</td></tr>';}).join('')||'<tr><td colspan="2">없음</td></tr>')+'</table><h3>자기 평가</h3>'+ev+'</div>';
+}
+function showReports(a){a=a.filter(Boolean);if(!a.length){toast('제출한 보고서가 없어요');return;}
+  var d=document.createElement('div');d.className='rpt';d.innerHTML='<div class="rbar noprint"><button class="btn b-grape" id="rprint">🖨️ 인쇄하기</button><button class="btn ghost" id="rclose">닫기</button></div>'+a.map(repHtml).join('');
+  document.body.appendChild(d);document.body.classList.add('hasrpt');
+  d.querySelector('#rprint').onclick=function(){window.print();};
+  d.querySelector('#rclose').onclick=function(){d.remove();document.body.classList.remove('hasrpt');};}
+document.addEventListener('click',function(e){var t=e.target.closest?e.target.closest('[data-rp],[data-pc]'):null;if(!t)return;if(t.dataset.rp!==undefined)showReports([ROWS[+t.dataset.rp]]);else showReports((CLSB[CLSK[+t.dataset.pc]]||[]).filter(function(r){return r.submittedAt;}));});
+function tryPw(){var el=document.getElementById('pw');if(!el)return;if(el.value==='1357'){UNLOCKED=true;main();}else{toast('비밀번호가 달라요');el.value='';}}
+document.addEventListener('click',function(e){if(e.target&&e.target.id==='pwgo')tryPw();});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target&&e.target.id==='pw')tryPw();});
+var INTRO_ON=false,seen=false,OWNER=false,OWNER_SEEN=false,CREST='crest.jpg';try{seen=!!localStorage.getItem('altteul-intro-v1');}catch(e){}
+function intro(){
+  INTRO_ON=true;
+  var R=[{e:'🛒',t:'내가 산 물건 되팔지 않기',s:'첫 번째 약속이야! 시장에서 산 보물은 소중하게 간직해야 해.',d:'내가 산 물건은 다시 파는 게 아니야. 산 물건은 잘 쓰고 간직해요!'},{e:'💰',t:'물건 최고 가격은 5000원까지',s:'두 번째! 알뜰마을 상점에는 가격 한도가 있단다.',d:'가격표에 적는 가격은 최대 5000원이야. 더 비싼 가격은 안 돼요!'},{e:'🍪',t:'외부에서 사온 음식 판매하지 않기',s:'세 번째! 마을 사람들의 건강을 지켜야 해.',d:'가게에서 사 온 음식은 팔 수 없어요. 직접 만든 음식은 괜찮아요. 예: 쿠키!'},{e:'🤫',t:'다른 반에서 피해 주지 않기',s:'마지막이야! 다른 반 가게는 이웃 마을이란다.',d:'다른 반에 들어갔을 때 뛰거나 소리를 지르는 행동은 안 돼요. 조용히 걸어 다녀요!'}];
+  var st=0;
+  function draw(){
+    var rule=st>=1&&st<=4?R[st-1]:null,earned=Math.max(0,Math.min(4,st-1)),stars='';
+    for(var k=0;k<4;k++)stars+=(k<earned?'⭐':'☆');
+    var body,label;
+    if(st===0){body='<p>어서 와, 꼬마 상인! 나는 알뜰마을을 지키는 군자 거북이야. 🐢</p><p>시장이 열리기 전에 상인이 꼭 지킬 <b>약속 4가지</b>를 알려 주는 퀘스트가 있어. 함께 해 볼래?</p>';label='좋아요, 들려 주세요!';}
+    else if(rule){body='<div class="qt">📜 약속 '+st+' / 4</div><p>'+rule.s+'</p><div class="big">'+rule.e+'</div><h2>'+rule.t+'</h2><p>'+rule.d+'</p>';label='✔ 이해했어요';}
+    else{body='<div class="big">🎉</div><h2>퀘스트 완료!</h2><p>약속 4가지를 모두 기억했구나. 이제 진짜 상인이 될 자격이 있어! 알뜰마을 장부를 줄게.</p>';label='🚀 시장으로 출발!';}
+    app.innerHTML='<div class="hero"><h1>🛍️ 알뜰시장 장부</h1></div><div class="card npc"><div class="stars" aria-label="별 '+earned+'개">'+stars+'</div><span class="av">🐢</span><div class="who2"><img class="crest" alt="군자 교표" src="'+CREST+'" onerror="this.remove()"><b>군자 거북이</b></div><div class="bubble">'+body+'</div><button class="btn b-coral" id="nx">'+label+'</button></div>';
+    document.getElementById('nx').onclick=function(){
+      if(st<5){st++;draw();window.scrollTo(0,0);return;}
+      try{localStorage.setItem('altteul-intro-v1','1');}catch(e){}
+      INTRO_ON=false;seen=true;if(S.p)main();else setup();window.scrollTo(0,0);
+    };
+  }
+  draw();
+}
+if(!S.p&&!seen)intro();else if(S.p)main();else setup();
+if(window.claude&&claude.use){claude.use('user').then(function(u){if(!u)return;return Promise.all([u.id(),u.canEdit(),u.isOwner()]).then(function(r){UID=r[0];TEACHER=!!r[1];OWNER=!!r[2];return claude.use('db');}).then(function(d){DB=d;if(INTRO_ON){}else if(OWNER&&!OWNER_SEEN){OWNER_SEEN=true;intro();}else if(S.p)main();else if(S.tab!=='tch')setup();sync();if(d&&TEACHER)d.collection('records').onSnapshot(function(sn){ROWS=sn.docs.map(function(x){return x.data();});if(S.tab==='tch'&&!INTRO_ON)main();},function(){});});}).catch(function(){});}
+})();
+</script>
+</body>
+</html>
