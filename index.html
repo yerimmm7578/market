@@ -102,8 +102,8 @@ nav button[data-t=tch].on{background:var(--grape)}
 var KEY='altteul-sijang-v1';
 var S={p:null,sells:[],buys:[],eS:[-1,-1,-1],eB:[-1,-1,-1],sign:false,left:'',tab:'sell'};
 try{var raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw));}catch(e){}
-// ===== Firebase 설정: 아래 4개 값을 Firebase 웹앱 설정에서 복사해 넣으세요 =====
-var FB_CONFIG={apiKey:"",authDomain:"",projectId:"",appId:""};
+// ===== Firebase 설정 =====
+var FB_CONFIG={apiKey:"AIzaSyDZX-mOBNN_7lUvOTMoCOf9uZt8Wf3M4bQ",authDomain:"market2026-1e139.firebaseapp.com",projectId:"market2026-1e139",storageBucket:"market2026-1e139.firebasestorage.app",messagingSenderId:"455248750457",appId:"1:455248750457:web:f73d54cd6130d8ed40f1a8"};
 var CLS=['강','들','산'],DB=null,ROWS=[],UID=null;
 try{UID=localStorage.getItem('altteul-uid');if(!UID){UID=Date.now().toString(36)+Math.random().toString(36).slice(2,8);localStorage.setItem('altteul-uid',UID);}}catch(e){UID=Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
 try{if(window.firebase&&FB_CONFIG.projectId){firebase.initializeApp(FB_CONFIG);DB=firebase.firestore();}}catch(e){DB=null;}
