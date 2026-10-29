@@ -239,7 +239,7 @@ function sumSec(){
   if(S.left!==''&&S.left!==null){h+=(+S.left===calc)?'<div class="msg">🎉 딱 맞아요! 돈 계산 달인!</div>':'<div class="warn">장부 금액('+won(calc)+')과 달라요. 가격표와 영수증을 다시 살펴보아요.</div>';}
   h+='<h2 style="margin-top:22px">♥ 판매 자기 평가</h2>'+evBlock(0,'eS')+'<h2>♥ 구매 자기 평가</h2>'+evBlock(1,'eB')+
   
-  '<button class="btn b-sky noprint" id="rp">🖨️ 보고서 보기 · 인쇄하기</button>'+'<button class="btn b-grape noprint" id="pt">📨 선생님께 알뜰시장 활동 결과 제출하기</button>'+submitMsg()+
+  '<button class="btn b-grape noprint" id="pt">📨 선생님께 알뜰시장 활동 결과 제출하기</button>'+submitMsg()+
   '<button class="btn ghost noprint" id="reset">처음부터 다시 하기</button></section>';
   return h;
 }
@@ -276,7 +276,6 @@ function bind(){
   var pg=document.getElementById('pig');if(pg){pg.onclick=editMe;pg.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();editMe();}};}
   var lf=document.getElementById('lf');lf.onchange=function(){S.left=lf.value;save();main();};
   
-  document.getElementById('rp').onclick=function(){showReports([myRep()]);};
   document.getElementById('pt').onclick=submit;
   document.getElementById('reset').onclick=function(){if(confirm('모든 기록이 지워져요. 정말 처음부터 다시 할까요?')){S={p:null,sells:[],buys:[],eS:[-1,-1,-1],eB:[-1,-1,-1],sign:false,left:'',tab:'sell',phase:'prep'};save();home();}};
 }
@@ -305,7 +304,6 @@ function repHtml(r){var A=r.sellsL||[],B=r.buysL||[],pc=r.stock?Math.round(r.sol
   '<h3>판매한 물건</h3><table class="tb"><tr><th>물건</th><th>가격</th><th>판매/준비</th><th>번 돈</th></tr>'+(A.map(function(x){return '<tr><td>'+esc(String(x.name))+'</td><td>'+won(x.price)+'</td><td>'+Number(x.sold||0)+' / '+Number(x.qty||0)+'</td><td>'+won(Number(x.price)*Number(x.sold))+'</td></tr>';}).join('')||'<tr><td colspan="4">없음</td></tr>')+'</table>'+
   '<h3>구매한 물건</h3><table class="tb"><tr><th>물건</th><th>가격</th></tr>'+(B.map(function(x){return '<tr><td>'+esc(String(x.name))+'</td><td>'+won(x.price)+'</td></tr>';}).join('')||'<tr><td colspan="2">없음</td></tr>')+'</table><h3>자기 평가</h3>'+ev+'<div class="sgn"><div>학부모님께서는 자녀의 알뜰시장 활동 결과를 확인하시고 아래에 서명 또는 도장을 찍어 주세요.</div><div class="sgbox"><span>부모님 확인</span><div class="stamp">(서명 또는 도장)</div></div></div></div>';
 }
-function myRep(){return {grade:S.p.grade,cls:S.p.cls,num:S.p.num,name:S.p.name,start:S.p.start,sold:soldN(),stock:stockN(),earn:totalS(),spent:totalB(),left:leftNow(),sellsL:S.sells,buysL:S.buys,eS:S.eS,eB:S.eB};}
 function showReports(a){a=a.filter(Boolean);if(!a.length){toast('제출한 보고서가 없어요');return;}
   var d=document.createElement('div');d.className='rpt';d.innerHTML='<div class="rbar noprint"><button class="btn b-grape" id="rprint">🖨️ 인쇄하기</button><button class="btn ghost" id="rclose">닫기</button></div>'+a.map(repHtml).join('');
   document.body.appendChild(d);document.body.classList.add('hasrpt');
