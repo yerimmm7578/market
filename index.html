@@ -128,7 +128,7 @@ function pick(id,list,cur,fn,suf){var el=document.getElementById(id);function d(
 function home(){
   if(TUNSUB){TUNSUB();TUNSUB=null;}
   app.innerHTML='<div class="hero"><h1>🛍️ 알뜰시장 장부</h1><p>가격표와 영수증을 내 손안에 모아요!</p></div><div class="card"><h2>누구로 시작할까요?</h2><button class="btn b-coral" id="rs">🎒 학생으로 시작하기</button><button class="btn b-grape" id="rt">👩‍🏫 교사로 시작하기</button></div>';
-  document.getElementById('rs').onclick=function(){if(!seen)intro();else setup();};
+  document.getElementById('rs').onclick=function(){if(S.p)main();else if(!seen)intro();else setup();};
   document.getElementById('rt').onclick=tLogin;
 }
 function setup(){
@@ -151,7 +151,7 @@ function setup(){
 }
 
 function header(){
-  return '<div class="card top" style="margin-top:6px"><div class="who">'+S.p.grade+'학년 '+S.p.cls+'반 '+S.p.num+'번<br><b>'+esc(S.p.name)+'</b></div><div class="pig" id="pig" role="button" tabindex="0" aria-label="내 정보 고치기"><span style="font-size:34px">🐷</span><div><small>지금 내 돈 ✏️</small><div class="big">'+won(leftNow())+'</div></div></div></div>'+
+  return '<button class="mini noprint" id="gohome">🏠 처음 화면으로</button><div class="card top" style="margin-top:6px"><div class="who">'+S.p.grade+'학년 '+S.p.cls+'반 '+S.p.num+'번<br><b>'+esc(S.p.name)+'</b></div><div class="pig" id="pig" role="button" tabindex="0" aria-label="내 정보 고치기"><span style="font-size:34px">🐷</span><div><small>지금 내 돈 ✏️</small><div class="big">'+won(leftNow())+'</div></div></div></div>'+
   '<nav class="noprint"><button data-t="sell" class="'+(S.tab==='sell'?'on':'')+'">🏷️ 판매</button><button data-t="buy" class="'+(S.tab==='buy'?'on':'')+'">🧾 구매</button><button data-t="sum" class="'+(S.tab==='sum'?'on':'')+'">⭐ 정리</button></nav>';
 }
 
@@ -271,6 +271,7 @@ function bind(){
   q('[data-ev]').forEach(function(b){b.onclick=function(){var a=b.dataset.ev.split(',');S[a[0]][+a[1]]=+a[2];save();main();};});
   q('[data-sd]').forEach(function(b){b.onclick=function(){var a=b.dataset.sd.split(','),it=S.sells[+a[0]],d=+a[1],n=it.sold+d;if(n<0)return;if(n>it.qty){toast('준비한 '+it.qty+'개를 모두 팔았어요!');return;}it.sold=n;save();main();if(d>0)toast('💰 +'+won(it.price));};});
   q('[data-ph]').forEach(function(b){b.onclick=function(){S.phase=b.dataset.ph;save();main();window.scrollTo(0,0);};});
+  document.getElementById('gohome').onclick=home;
   var pg=document.getElementById('pig');if(pg){pg.onclick=editMe;pg.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();editMe();}};}
   var lf=document.getElementById('lf');lf.onchange=function(){S.left=lf.value;save();main();};
   
