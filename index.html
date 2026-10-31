@@ -333,7 +333,7 @@ function intro(){
     for(var k=0;k<N;k++)stars+=(k<earned?'⭐':'☆');
     var body,label;
     if(st===0){body='<p>어서 와, 꼬마 상인! 나는 알뜰마을을 지키는 군자 거북이야. 🐢</p><p>시장이 열리기 전에 상인이 꼭 확인할 <b>점검 '+N+'가지</b>를 알려 주는 퀘스트가 있어. 함께 해 볼래?</p>';label='좋아요, 들려 주세요!';}
-    else if(rule){body='<div class="qt">📜 점검 '+st+' / '+N+'</div><p>'+rule.s+'</p><div class="big">'+rule.e+'</div><h2>'+rule.t+'</h2><p>'+rule.d+'</p>';label='✔ 이해했어요';}
+    else if(rule){body='<div class="qt">📜 점검 '+st+' / '+N+'</div><p>'+rule.s+'</p><div class="big">'+rule.e+'</div><h2>'+rule.t+'</h2><p>'+rule.d+'</p>';label='✔ 확인했어요';}
     else{body='<div class="big">🎉</div><h2>퀘스트 완료!</h2><p>점검 '+N+'가지를 모두 확인했구나. 이제 진짜 상인이 될 자격이 있어! 알뜰마을 장부를 줄게.</p>';label='🚀 시장으로 출발!';}
     app.innerHTML='<div class="hero"><h1>🛍️ 알뜰시장 장부</h1></div><div class="card npc"><div class="stars" aria-label="별 '+earned+'개">'+stars+'</div><span class="av">🐢</span><div class="who2"><img class="crest" alt="군자 교표" src="'+CREST+'" onerror="this.remove()"><b>군자 거북이</b></div><div class="bubble">'+body+'</div><button class="btn b-coral" id="nx">'+label+'</button></div>';
     document.getElementById('nx').onclick=function(){
