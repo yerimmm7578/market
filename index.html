@@ -88,7 +88,7 @@ nav button[data-t=sell].on{background:var(--coral)}nav button[data-t=buy].on{bac
 .tb{width:100%;border-collapse:collapse;font-size:15px}.tb th,.tb td{border-bottom:2px dotted var(--line);padding:6px 5px;text-align:center;white-space:nowrap}.tb th{color:var(--sub);font-weight:400}
 nav button[data-t=tch].on{background:var(--grape)}
 .mini{font:inherit;font-size:14px;border:2px solid var(--ink);border-radius:12px;background:var(--card);color:var(--ink);padding:4px 8px;cursor:pointer;margin:4px 0}
-.rpt{position:fixed;inset:0;overflow:auto;background:#fff;color:#222;padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(14px + env(safe-area-inset-bottom,0px));z-index:30}.rpt .tb th{color:#555}.rpt .tb td,.rpt .tb th{border-bottom:2px solid #ddd}.rp{max-width:210mm;margin:0 auto 30px;background:#fff;padding:10mm;box-shadow:0 0 8px rgba(0,0,0,.25)}.rp h2{margin:0 0 6px}.rp h3{margin:14px 0 4px}.rp p{margin:4px 0}.sgn{margin-top:16px;display:flex;justify-content:flex-end;break-inside:avoid}.sgbox{width:12mm;border:1.5px solid #333}.sgbox span{display:block;text-align:center;background:#f3f3f3;border-bottom:1.5px solid #333;font-size:9px;line-height:1.25;padding:1px 0;word-break:keep-all}.sgbox .stamp{height:12mm}.rbar{max-width:720px;margin:0 auto 10px}
+.rpt{position:fixed;inset:0;overflow:auto;background:#fff;color:#222;padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(14px + env(safe-area-inset-bottom,0px));z-index:30}.rpt .tb th{color:#555}.rpt .tb td,.rpt .tb th{border-bottom:2px solid #ddd}.rp{max-width:210mm;margin:0 auto 30px;background:#fff;padding:10mm;box-shadow:0 0 8px rgba(0,0,0,.25)}.rp h2{margin:0 0 6px}.rp h3{margin:14px 0 4px}.rp p{margin:4px 0}.sgn{margin-top:16px;display:flex;justify-content:flex-end;break-inside:avoid}.sgbox{width:24mm;border:2px solid #333}.sgbox span{display:block;text-align:center;background:#f3f3f3;border-bottom:2px solid #333;font-size:12px;line-height:1.3;padding:2px 0}.sgbox .stamp{height:24mm}.rbar{max-width:720px;margin:0 auto 10px}
 @page{size:A4;margin:12mm}
 @media print{body.hasrpt .wrap{display:none!important}.rpt{position:static;overflow:visible;padding:0}.rp{break-after:page;margin:0;padding:0;box-shadow:none;max-width:none}.rp:last-child{break-after:auto}.rpt .tb{font-size:12px}.rp,.rp p{font-size:13px}.rp h2{font-size:22px}.rp h3{font-size:16px}}
 @media print{.sec.tch{display:none!important}}
@@ -125,6 +125,7 @@ var app=document.getElementById('app');
 var EVS=[['알뜰시장에 필요한 준비물을 빠짐없이 준비했나요?','물건을 판매 방법에 맞게 잘 판매하였나요?','가게 놀이 활동 후 주변 정리를 잘하였나요?'],['나에게 꼭 필요한 물건만 구매하였나요?','합리적으로 저렴한 가격에 물건을 구입하였나요?','가게 놀이 활동 후 주변 정리를 잘하였나요?']];
 var LV=[['😍','참 잘했어요'],['🙂','잘했어요'],['💪','노력이 필요해요']];
 
+function clsFor(g){return g<=3?CLS.slice(0,2):CLS;}
 function pick(id,list,cur,fn,suf){var el=document.getElementById(id);function d(){el.innerHTML='';list.forEach(function(v){var b=document.createElement('button');b.textContent=v+(suf||'');if(v===cur)b.className='on';b.onclick=function(){cur=v;fn(v);d();};el.appendChild(b);});}d();}
 function home(){
   if(TUNSUB){TUNSUB();TUNSUB=null;}
@@ -141,8 +142,9 @@ function setup(){
   '<label>처음 가지고 있던 돈 (원)</label><input id="st" type="number" inputmode="numeric" min="0" step="100" placeholder="예: 3000">'+
   '<div id="err"></div><button class="btn b-coral" id="go">🚀 시작하기</button><button class="btn ghost" id="hm">← 처음으로</button></div>';
   if(S.p){document.getElementById('num').value=S.p.num;document.getElementById('nm').value=S.p.name;document.getElementById('st').value=S.p.start;}
-  pick('gr',[1,2,3,4,5,6],g,function(v){g=v;},'');
-  pick('cr',CLS,c,function(v){c=v;},'반');
+  function drawC(){if(clsFor(g).indexOf(c)<0)c='';pick('cr',clsFor(g),c,function(v){c=v;},'반');}
+  pick('gr',[1,2,3,4,5,6],g,function(v){g=v;drawC();},'');
+  drawC();
   document.getElementById('hm').onclick=home;
   document.getElementById('go').onclick=function(){
     var num=+document.getElementById('num').value,nm=document.getElementById('nm').value.trim(),sv=document.getElementById('st').value,st=+sv;
@@ -172,8 +174,9 @@ function tLogin(){
   if(TUNSUB){TUNSUB();TUNSUB=null;}
   var g=TG||5,c=TC;
   app.innerHTML='<div class="hero"><h1>👩‍🏫 교사로 입장하기</h1></div><div class="card"><label>학년</label><div class="grades" id="tg"></div><label>반</label><div class="grades c3" id="tcl"></div>'+(UNLOCKED?'':'<label>교사 비밀번호</label><input id="pw" type="password" inputmode="numeric" maxlength="8" placeholder="비밀번호">')+'<div id="terr"></div><button class="btn b-grape" id="tgo">🔓 입장하기</button><button class="btn ghost" id="tbk">← 처음으로</button></div>';
-  pick('tg',[1,2,3,4,5,6],g,function(v){g=v;},'');
-  pick('tcl',CLS,c,function(v){c=v;},'반');
+  function drawC(){if(clsFor(g).indexOf(c)<0)c='';pick('tcl',clsFor(g),c,function(v){c=v;},'반');}
+  pick('tg',[1,2,3,4,5,6],g,function(v){g=v;drawC();},'');
+  drawC();
   document.getElementById('tbk').onclick=home;
   document.getElementById('tgo').onclick=function(){
     var pw=document.getElementById('pw'),er=document.getElementById('terr');
@@ -286,8 +289,8 @@ function editMe(){
   d.innerHTML='<div class="card" style="max-width:560px;margin:20px auto"><h2>✏️ 내 정보 고치기</h2><label>학년</label><div class="grades" id="egr"></div><label>반</label><div class="grades c3" id="ecr"></div><label>번호</label><input id="enu" type="number" inputmode="numeric" min="1"><label>이름</label><input id="enm" maxlength="10"><label>지금 내 돈 (원)</label><input id="emo" type="number" inputmode="numeric" step="100"><div id="eer"></div><button class="btn b-mint" id="esv">저장하기</button><button class="btn ghost" id="ecc">취소</button></div>';
   document.body.appendChild(d);
   var $=function(i){return d.querySelector('#'+i);};
-  var c2=S.p.cls;pick('ecr',CLS,c2,function(v){c2=v;},'반');$('enu').value=S.p.num;$('enm').value=S.p.name;$('emo').value=leftNow();
-  function drawG(){var gr=$('egr');gr.innerHTML='';for(var i=1;i<=6;i++){(function(i){var b=document.createElement('button');b.textContent=i;if(i===g)b.className='on';b.onclick=function(){g=i;drawG();};gr.appendChild(b);})(i);}}
+  var c2=S.p.cls;function drawC2(){if(clsFor(g).indexOf(c2)<0)c2='';pick('ecr',clsFor(g),c2,function(v){c2=v;},'반');}drawC2();$('enu').value=S.p.num;$('enm').value=S.p.name;$('emo').value=leftNow();
+  function drawG(){var gr=$('egr');gr.innerHTML='';for(var i=1;i<=6;i++){(function(i){var b=document.createElement('button');b.textContent=i;if(i===g)b.className='on';b.onclick=function(){g=i;drawG();drawC2();};gr.appendChild(b);})(i);}}
   drawG();
   $('ecc').onclick=function(){d.remove();};
   $('esv').onclick=function(){
@@ -310,22 +313,30 @@ function showReports(a){a=a.filter(Boolean);if(!a.length){toast('제출한 보�
   d.querySelector('#rclose').onclick=function(){d.remove();document.body.classList.remove('hasrpt');};}
 document.addEventListener('click',function(e){var t=e.target.closest?e.target.closest('[data-rp]'):null;if(t)showReports([ROWS[+t.dataset.rp]]);});
 document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target&&e.target.id==='pw'){var g=document.getElementById('tgo');if(g)g.click();}});
-var INTRO_ON=false,seen=false,CREST='crest.jpg';try{seen=!!localStorage.getItem('altteul-intro-v1');}catch(e){}
+var INTRO_ON=false,seen=false,CREST='crest.jpg';try{seen=!!localStorage.getItem('altteul-intro-v2');}catch(e){}
 function intro(){
   INTRO_ON=true;
-  var R=[{e:'🛒',t:'내가 산 물건 되팔지 않기',s:'첫 번째 약속이야! 시장에서 산 보물은 소중하게 간직해야 해.',d:'내가 산 물건은 다시 파는 게 아니야. 산 물건은 잘 쓰고 간직해요!'},{e:'💰',t:'물건 최고 가격은 5000원까지',s:'두 번째! 알뜰마을 상점에는 가격 한도가 있단다.',d:'가격표에 적는 가격은 최대 5000원이야. 더 비싼 가격은 안 돼요!'},{e:'🍪',t:'외부에서 사온 음식 판매하지 않기',s:'세 번째! 마을 사람들의 건강을 지켜야 해.',d:'가게에서 사 온 음식은 팔 수 없어요. 직접 만든 음식은 괜찮아요. 예: 쿠키!'},{e:'🤫',t:'다른 반에서 피해 주지 않기',s:'마지막이야! 다른 반 가게는 이웃 마을이란다.',d:'다른 반에 들어갔을 때 뛰거나 소리를 지르는 행동은 안 돼요. 조용히 걸어 다녀요!'}];
-  var st=0;
+  var R=[
+  {e:'📦',t:'가져온 물건의 종류',s:'첫 번째 점검이야! 어떤 물건을 팔 수 있는지 먼저 살펴보자.',d:'가져온 물품이 도서, 학용품, 가방, 의류, 신발, 장난감, 악세사리, 쿠키에 해당하나요?'},
+  {e:'🍱',t:'식중독 위험 음식',s:'두 번째! 마을 사람들의 건강이 가장 중요하단다.',d:'식중독 위험이 있는 음식을 가져오지는 않았나요?'},
+  {e:'🥫',t:'기성품 소분',s:'세 번째! 사 온 물건을 나누어 담아 팔면 안 돼.',d:'기성품을 소분한 물품을 가져오지는 않았나요?'},
+  {e:'🏷️',t:'가격 붙이기',s:'네 번째! 손님이 가격을 한눈에 알아볼 수 있어야 해.',d:'각 물품에 가격이 붙어있나요?'},
+  {e:'✨',t:'깨끗하게 손질하기',s:'다섯 번째! 반짝반짝한 물건은 손님의 눈길을 끈단다.',d:'누구나 사고 싶은 마음이 생기도록 깨끗하게 손질되어있나요?'},
+  {e:'⚠️',t:'위험한 물건',s:'여섯 번째! 모두가 안전해야 즐거운 시장이야.',d:'위험한 물건이나 장난감을 가져오지는 않았나요? (총, 칼모양의 장난감 등)'},
+  {e:'🎲',t:'사행성 물건',s:'일곱 번째! 운에 맡기는 놀이는 시장에 어울리지 않아.',d:'사행성을 조장할 위험이 있는 물건을 가져오지 않았나요?'},
+  {e:'🪙',t:'동전으로 준비하기',s:'마지막이야! 거래할 때 쓸 돈도 잊지 말아야 해.',d:'물건을 구입할 돈을 동전으로 가져왔나요?'}];
+  var N=R.length,st=0;
   function draw(){
-    var rule=st>=1&&st<=4?R[st-1]:null,earned=Math.max(0,Math.min(4,st-1)),stars='';
-    for(var k=0;k<4;k++)stars+=(k<earned?'⭐':'☆');
+    var rule=st>=1&&st<=N?R[st-1]:null,earned=Math.max(0,Math.min(N,st-1)),stars='';
+    for(var k=0;k<N;k++)stars+=(k<earned?'⭐':'☆');
     var body,label;
-    if(st===0){body='<p>어서 와, 꼬마 상인! 나는 알뜰마을을 지키는 군자 거북이야. 🐢</p><p>시장이 열리기 전에 상인이 꼭 지킬 <b>약속 4가지</b>를 알려 주는 퀘스트가 있어. 함께 해 볼래?</p>';label='좋아요, 들려 주세요!';}
-    else if(rule){body='<div class="qt">📜 약속 '+st+' / 4</div><p>'+rule.s+'</p><div class="big">'+rule.e+'</div><h2>'+rule.t+'</h2><p>'+rule.d+'</p>';label='✔ 이해했어요';}
-    else{body='<div class="big">🎉</div><h2>퀘스트 완료!</h2><p>약속 4가지를 모두 기억했구나. 이제 진짜 상인이 될 자격이 있어! 알뜰마을 장부를 줄게.</p>';label='🚀 시장으로 출발!';}
+    if(st===0){body='<p>어서 와, 꼬마 상인! 나는 알뜰마을을 지키는 군자 거북이야. 🐢</p><p>시장이 열리기 전에 상인이 꼭 확인할 <b>점검 '+N+'가지</b>를 알려 주는 퀘스트가 있어. 함께 해 볼래?</p>';label='좋아요, 들려 주세요!';}
+    else if(rule){body='<div class="qt">📜 점검 '+st+' / '+N+'</div><p>'+rule.s+'</p><div class="big">'+rule.e+'</div><h2>'+rule.t+'</h2><p>'+rule.d+'</p>';label='✔ 이해했어요';}
+    else{body='<div class="big">🎉</div><h2>퀘스트 완료!</h2><p>점검 '+N+'가지를 모두 확인했구나. 이제 진짜 상인이 될 자격이 있어! 알뜰마을 장부를 줄게.</p>';label='🚀 시장으로 출발!';}
     app.innerHTML='<div class="hero"><h1>🛍️ 알뜰시장 장부</h1></div><div class="card npc"><div class="stars" aria-label="별 '+earned+'개">'+stars+'</div><span class="av">🐢</span><div class="who2"><img class="crest" alt="군자 교표" src="'+CREST+'" onerror="this.remove()"><b>군자 거북이</b></div><div class="bubble">'+body+'</div><button class="btn b-coral" id="nx">'+label+'</button></div>';
     document.getElementById('nx').onclick=function(){
-      if(st<5){st++;draw();window.scrollTo(0,0);return;}
-      try{localStorage.setItem('altteul-intro-v1','1');}catch(e){}
+      if(st<=N){st++;draw();window.scrollTo(0,0);return;}
+      try{localStorage.setItem('altteul-intro-v2','1');}catch(e){}
       INTRO_ON=false;seen=true;if(S.p)main();else setup();window.scrollTo(0,0);
     };
   }
